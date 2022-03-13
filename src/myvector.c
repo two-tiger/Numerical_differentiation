@@ -7,6 +7,7 @@ Vector *VectorAlloc(int size)
     Vector *v = (Vector *)malloc(sizeof(Vector));
     v->entry = (double *)malloc(sizeof(double) * size);
     v->size = size;
+    return v;
 };
 
 void *VectorFree(Vector *v)
@@ -30,7 +31,7 @@ void VectorCopy(const Vector *v, Vector *w)
     w->size = v->size;
 }
 
-Vector *VectorAddConst(Vector *v, double a, int copy) 
+Vector *VectorAddConst(Vector *v, double a, int copy)
 {
     if (copy == 1)
     {
@@ -85,6 +86,7 @@ Vector *VectorMultiply(Vector *v, double a, int copy)
         {
             w->entry[i] = v->entry[i] * a;
         }
+        return w;
     }
     else
     {
@@ -92,6 +94,7 @@ Vector *VectorMultiply(Vector *v, double a, int copy)
         {
             v->entry[i] *= a;
         }
+        return v;
     }
 }
 
@@ -101,6 +104,34 @@ void *VectorPrint(Vector *v)
     for (size_t i = 0; i < v->size; i++)
     {
         printf("%f, ", v->entry[i]);
+    }
+    printf("]");
+}
+
+Matrix *MatrixAlloc(int rowSize)
+{
+    Matrix *m = (Matrix *)malloc(sizeof(Matrix));
+    m->grad = (Vector *)VectorAlloc(sizeof(Vector) * rowSize);
+    m->rowSize = rowSize;
+    return m;
+}
+
+void *MatrixFree(Matrix *m)
+{
+    free(m->grad);
+    free(m);
+}
+
+void *MatrixPrint(Matrix *m)
+{
+    printf("[");
+    for (size_t i = 0; i < m->rowSize; i++)
+    {
+        for (size_t j = 0; j < m->grad->size; j++)
+        {
+            printf("%f, ", m->grad->entry[j]);
+        }
+        printf("\n");
     }
     printf("]");
 }
