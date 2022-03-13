@@ -1,16 +1,17 @@
 #include "myvector.h"
 #include <stdlib.h>
 #include "function.h"
-double NdsclaFunctionCall(NdsclaFunction *function, Vector *x)
-{
-    return function->function(x);
-}
 
 NdsclaFunction *NdsclaFunctionAlloc(double (*function)(Vector *), int inputsize)
 {
     NdsclaFunction *f = (NdsclaFunction *)malloc(sizeof(NdsclaFunction));
     f->function = function;
     f->inputSize = inputsize;
+}
+
+double NdsclaFunctionCall(NdsclaFunction *function, Vector *x)
+{
+    return function->function(x);
 }
 
 void *NdsclaFunctionFree(NdsclaFunction *function)
