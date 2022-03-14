@@ -10,6 +10,6 @@ struct VectorFunction
 };
 typedef struct VectorFunction VectorFunction;
 
-VectorFunction *VectorFunctionAlloc(int outputsize);
+VectorFunction *VectorFunctionAlloc(int inputsize, int outputsize);
 void *VectorFunctionFree(VectorFunction *F);
 void JacobiMatrix(VectorFunction *Function, const Vector *x0, Matrix *jacobi);

@@ -108,10 +108,14 @@ void *VectorPrint(Vector *v)
     printf("]");
 }
 
-Matrix *MatrixAlloc(int rowSize)
+Matrix *MatrixAlloc(int rowSize, int colSize)
 {
     Matrix *m = (Matrix *)malloc(sizeof(Matrix));
-    m->grad = (Vector *)VectorAlloc(sizeof(Vector) * rowSize);
+    m->grad = (Vector **)malloc(sizeof(Vector *) * rowSize);
+    for (int i = 0; i < rowSize; i++)
+    {
+        m->grad[i] = VectorAlloc(colSize);
+    }
     m->rowSize = rowSize;
     return m;
 }
@@ -127,9 +131,9 @@ void *MatrixPrint(Matrix *m)
     printf("[");
     for (size_t i = 0; i < m->rowSize; i++)
     {
-        for (size_t j = 0; j < m->grad->size; j++)
+        for (size_t j = 0; j < m->grad[i]->size; j++)
         {
-            printf("%f, ", m->grad->entry[j]);
+            printf("%f, ", m->grad[i]->entry[j]);
         }
         printf("\n");
     }
