@@ -23,3 +23,4 @@ void *VectorPrint(Vector *v);
 Matrix *MatrixAlloc(int rowSize, int colSize);
 void *MatrixFree(Matrix *m);
 void *MatrixPrint(Matrix *m);
+void *HessianPrint(Vector *H, int inputsize, int outputsize);

@@ -139,3 +139,17 @@ void *MatrixPrint(Matrix *m)
     }
     printf("]");
 }
+
+void *HessianPrint(Vector *H, int inputsize, int outputsize)
+{
+    printf("[");
+    for (int i = 0; i < outputsize; i++)
+    {
+        for (int j = 0; j < inputsize; j++)
+        {
+            printf("%f, ", H->entry[outputsize * i + j]);
+        }
+        printf("\n");
+    }
+    printf("]");
+}

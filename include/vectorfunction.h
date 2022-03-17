@@ -13,3 +13,4 @@ typedef struct VectorFunction VectorFunction;
 VectorFunction *VectorFunctionAlloc(int inputsize, int outputsize);
 void *VectorFunctionFree(VectorFunction *F);
 void JacobiMatrix(VectorFunction *Function, const Vector *x0, Matrix *jacobi);
+void HessianMatrix(VectorFunction *Function, const Vector *x0, double h, Vector *hessian);
