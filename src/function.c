@@ -37,3 +37,26 @@ void centralGrad(NdsclaFunction *function, const double h, const Vector *x0, Vec
     }
     VectorFree(temp);
 }
+
+void HessianMatrix(NdsclaFunction *function, const Vector *x0, double h, Vector *hessian)
+{
+    double f_ah1_ah2, f_ah1_sh2, f_sh1_ah2, f_sh1_sh2;
+    for (int i = 0; i < function->inputSize; i++)
+    {
+        for (int j = 0; j < function->inputSize; j++)
+        {
+            Vector *temp = VectorAlloc(function->inputSize);
+            VectorCopy(x0, temp);
+            temp->entry[i] += h;
+            temp->entry[j] += h;
+            f_ah1_ah2 = NdsclaFunctionCall(function->function, temp);
+            temp->entry[j] -= 2 * h;
+            f_ah1_sh2 = NdsclaFunctionCall(function->function, temp);
+            temp->entry[i] -= 2 * h;
+            f_sh1_sh2 = NdsclaFunctionCall(function->function, temp);
+            temp->entry[j] += 2 * h;
+            f_sh1_ah2 = NdsclaFunctionCall(function->function, temp);
+            hessian->entry[function->inputSize * i + j] = (f_ah1_ah2 - f_ah1_sh2 - f_sh1_ah2 + f_sh1_sh2) / (4*h*h);
+        }
+    }
+}

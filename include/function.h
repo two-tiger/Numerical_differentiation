@@ -11,3 +11,4 @@ NdsclaFunction *NdsclaFunctionAlloc(double (*function)(Vector *), int inputsize)
 double NdsclaFunctionCall(NdsclaFunction *function, Vector *x);
 void *NdsclaFunctionFree(NdsclaFunction *function);
 void centralGrad(NdsclaFunction *function, const double h, const Vector *x0, Vector *grad);
+void HessianMatrix(NdsclaFunction *function, const Vector *x0, double h, Vector *hessian);

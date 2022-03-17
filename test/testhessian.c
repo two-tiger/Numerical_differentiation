@@ -28,20 +28,16 @@ double f4(Vector *x)
 
 int main(void)
 {
+    
     NdsclaFunction *function1 = NdsclaFunctionAlloc(f1, 3);
     NdsclaFunction *function2 = NdsclaFunctionAlloc(f2, 3);
     NdsclaFunction *function3 = NdsclaFunctionAlloc(f3, 3);
     NdsclaFunction *function4 = NdsclaFunctionAlloc(f4, 3);
-    VectorFunction *testFunction = VectorFunctionAlloc(3, 4);
-    testFunction->Function[0] = *function1;
-    testFunction->Function[1] = *function2;
-    testFunction->Function[2] = *function3;
-    testFunction->Function[3] = *function4;
     Vector *x0 = VectorAlloc(3);
     x0->entry[0] = 1.0;
     x0->entry[1] = 2.0;
     x0->entry[2] = 3.8;
-    Vector *hessian = VectorAlloc(testFunction->inputSize*testFunction->outputSize);
-    HessianMatrix(testFunction,x0,0.01,hessian);
-    HessianPrint(hessian,testFunction->inputSize,testFunction->outputSize);
+    Vector *hessian = VectorAlloc(function1->inputSize * function1->inputSize);
+    HessianMatrix(function1, x0, 0.01, hessian);
+    HessianPrint(hessian, function1->inputSize, function1->inputSize);
 }
