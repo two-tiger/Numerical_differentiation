@@ -4,6 +4,7 @@
 #include "myvector.h"
 #include "function.h"
 #include "vectorfunction.h"
+#include <omp.h>
 
 double f1(Vector *x)
 {
@@ -38,6 +39,17 @@ int main(void)
     x0->entry[1] = 2.0;
     x0->entry[2] = 3.8;
     Vector *hessian = VectorAlloc(function1->inputSize * function1->inputSize);
-    HessianMatrix(function1, x0, 0.01, hessian);
+    double start, end;
+    start = omp_get_wtime();
+    HessianMatrixOMP(function1, x0, 0.01, hessian);
+    end = omp_get_wtime();
     HessianPrint(hessian, function1->inputSize, function1->inputSize);
+    printf("\n");
+    printf("the time of HessianMatrix with omp is %d\n", end-start);
+    start = omp_get_wtime();
+    HessianMatrix(function1, x0, 0.01, hessian);
+    end = omp_get_wtime();
+    HessianPrint(hessian, function1->inputSize, function1->inputSize);
+    printf("\n");
+    printf("the time of HessianMatrix is %d\n", end-start);
 }

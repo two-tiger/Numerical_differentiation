@@ -20,8 +20,11 @@ void *VectorFunctionFree(VectorFunction *F)
 
 void JacobiMatrix(VectorFunction *Function, const Vector *x0, Matrix *jacobi)
 {
-    for (size_t i = 0; i < jacobi->rowSize; i++)
+#pragma omp for
+{
+    for (int i = 0; i < jacobi->rowSize; i++)
     {
         centralGrad(&(Function->Function[i]), 0.01, x0, (jacobi->grad[i]));
     }
+}
 }

@@ -3,6 +3,7 @@
 #include "math.h"
 #include "function.h"
 #include "myvector.h"
+#include <omp.h>
 
 double target_function(Vector *mat)
 {
@@ -20,21 +21,32 @@ double f1(Vector *x)
 
 int main(void)
 {
-    NdsclaFunction *f = NdsclaFunctionAlloc(target_function, 3);
-    Vector *x0 = VectorAlloc(3);
-    x0->entry[0] = 1.0;
-    x0->entry[1] = 2.0;
-    x0->entry[2] = 2.0;
-    Vector *grad = VectorAlloc(3);
-    centralGrad(f, 0.01, x0, grad);
-    VectorPrint(grad);
-    printf("\n");
+    // NdsclaFunction *f = NdsclaFunctionAlloc(target_function, 3);
+    // Vector *x0 = VectorAlloc(3);
+    // x0->entry[0] = 1.0;
+    // x0->entry[1] = 2.0;
+    // x0->entry[2] = 2.0;
+    // Vector *grad = VectorAlloc(3);
+    // centralGrad(f, 0.01, x0, grad);
+    // VectorPrint(grad);
+    // printf("\n");
     NdsclaFunction *fun = NdsclaFunctionAlloc(f1, 3);
     Vector *x0_fun = VectorAlloc(3);
     x0_fun->entry[0] = 1.0;
     x0_fun->entry[1] = 2.0;
     x0_fun->entry[2] = 3.8;
     Vector *grad_fun = VectorAlloc(3);
-    centralGrad(fun, 0.01, x0_fun, grad_fun);
+    double start, end;
+    start = omp_get_wtime();
+    centralGradOMP(fun, 0.01, x0_fun, grad_fun);
+    end = omp_get_wtime();
     VectorPrint(grad_fun);
+    printf("\n");
+    printf("the time of centralGrad with omp is %d\n", end-start);
+    start = omp_get_wtime();
+    centralGrad(fun, 0.01, x0_fun, grad_fun);
+    end = omp_get_wtime();
+    VectorPrint(grad_fun);
+    printf("\n");
+    printf("the time of centralGrad is %d\n", end-start);
 }

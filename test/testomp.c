@@ -1,19 +1,27 @@
 #include <omp.h>
-#define N 1000
-#define CHUNKSIZE 100
-
-void main(int argc, char *argv[])
+#include <stdio.h>
+void report_num_threads(int level)
 {
-    int i, chunk;
-    float a[N], b[N], c[N];
-    /* Some initializations */
-    for (i=0; i < N; i++)
-        a[i] = b[i] = i * 1.0;
-    chunk = CHUNKSIZE;
-#pragma omp parallel shared(a,b,c,chunk) private(i)
+    #pragma omp single
+    {
+        printf("Level %d: number of threads in the team - %d\n",
+                  level, omp_get_num_threads());
+    }
+ }
+int main()
 {
-  #pragma omp for schedule(dynamic,chunk) nowait
-    for (i=0; i < N; i++)
-        c[i] = a[i] + b[i];
-}   /* end of parallel region */
+    omp_set_dynamic(0);
+    #pragma omp parallel num_threads(2)
+    {
+        report_num_threads(1);
+        #pragma omp parallel num_threads(2)
+        {
+            report_num_threads(2);
+            #pragma omp parallel num_threads(2)
+            {
+                report_num_threads(3);
+            }
+        }
+    }
+    return(0);
 }
