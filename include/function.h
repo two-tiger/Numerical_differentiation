@@ -1,4 +1,5 @@
 #include "myvector.h"
+#include "mycomplex.h"
 #pragma once
 struct NdsclaFunction
 {
@@ -8,7 +9,7 @@ struct NdsclaFunction
 };
 typedef struct NdsclaFunction NdsclaFunction;
 
-NdsclaFunction *NdsclaFunctionAlloc(double (*function)(Vector *), int inputsize);
+NdsclaFunction *NdsclaFunctionAlloc(double (*function)(Vector *), int inputsize, Complex (*complexfunction)(Vector *));
 double NdsclaFunctionCall(NdsclaFunction *function, Vector *x);
 void *NdsclaFunctionFree(NdsclaFunction *function);
 void centralGradOMP(NdsclaFunction *function, const double h, const Vector *x0, Vector *grad);

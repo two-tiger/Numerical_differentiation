@@ -5,6 +5,7 @@
 #include "myvector.h"
 #include <omp.h>
 #include "mycomplex.h"
+#include "vectorfunction.h"
 
 // sin(x1)*x2+e^x2*x1+cos(x3)*e^x1*e^x2
 double f1(Vector *x)
@@ -40,34 +41,25 @@ Complex f2complex(Vector *x)
 
 int main(void)
 {
-    NdsclaFunction *fun = NdsclaFunctionAlloc(f1, 3, f1complex);
+    NdsclaFunction *function1 = NdsclaFunctionAlloc(f1, 3, f1complex);
+    NdsclaFunction *function2 = NdsclaFunctionAlloc(f2, 3, f2complex);
+    VectorFunction *testfunction = VectorFunctionAlloc(3, 2);
+    testfunction->Function[0] = *function1;
+    testfunction->Function[1] = *function2;
     Vector *x0 = VectorAlloc(3);
     x0->entry[0] = 1.0;
     x0->entry[1] = 2.0;
     x0->entry[2] = 3.8;
-    Vector *centralgrad = VectorAlloc(3);
-    Vector *complexgrad = VectorAlloc(3);
-    centralGrad(fun, 0.01, x0, centralgrad);
-    printf("the grad of function using central: ");
-    VectorPrint(centralgrad);
+    Matrix *centraljacobi = MatrixAlloc(2, 3);
+    Matrix *complexjacobi = MatrixAlloc(2, 3);
+    JacobiMatrix(testfunction, x0, centraljacobi);
+    printf("the jacobi matrix of function using central: ");
     printf("\n");
-    bicomplexGrad(fun, x0, 0.01, complexgrad);
-    printf("the grad of function using complex: ");
-    VectorPrint(complexgrad);
+    MatrixPrint(centraljacobi);
     printf("\n");
-    NdsclaFunction *fun1 = NdsclaFunctionAlloc(f2, 3, f2complex);
-    Vector *x1 = VectorAlloc(3);
-    x1->entry[0] = 1.0;
-    x1->entry[1] = 2.0;
-    x1->entry[2] = 3.8;
-    Vector *centralgrad1 = VectorAlloc(3);
-    Vector *complexgrad1 = VectorAlloc(3);
-    centralGrad(fun1, 0.01, x1, centralgrad1);
-    printf("the grad of function using central: ");
-    VectorPrint(centralgrad1);
+    BicomplexJacobiMatrix(testfunction, x0, complexjacobi);
+    printf("the jacobi matrix of function using complex: ");
     printf("\n");
-    bicomplexGrad(fun1, x1, 0.01, complexgrad1);
-    printf("the grad of function using complex: ");
-    VectorPrint(complexgrad1);
+    MatrixPrint(complexjacobi);
     printf("\n");
 }

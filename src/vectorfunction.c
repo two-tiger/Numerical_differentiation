@@ -28,3 +28,15 @@ void JacobiMatrix(VectorFunction *Function, const Vector *x0, Matrix *jacobi)
     }
 }
 }
+
+void BicomplexJacobiMatrix(VectorFunction *Function, const Vector *x0, Matrix *jacobi)
+{
+    for (int i = 0; i < jacobi->rowSize; i++)
+    {
+        if (Function->Function[i].complexfunction == NULL)
+        {
+            return;
+        }
+        bicomplexGrad(&(Function->Function[i]), x0, 0.01, (jacobi->grad[i]));
+    }
+}

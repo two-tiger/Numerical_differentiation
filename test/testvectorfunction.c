@@ -28,10 +28,10 @@ double f4(Vector *x)
 
 int main(void)
 {
-    NdsclaFunction *function1 = NdsclaFunctionAlloc(f1, 3);
-    NdsclaFunction *function2 = NdsclaFunctionAlloc(f2, 3);
-    NdsclaFunction *function3 = NdsclaFunctionAlloc(f3, 3);
-    NdsclaFunction *function4 = NdsclaFunctionAlloc(f4, 3);
+    NdsclaFunction *function1 = NdsclaFunctionAlloc(f1, 3, NULL);
+    NdsclaFunction *function2 = NdsclaFunctionAlloc(f2, 3, NULL);
+    NdsclaFunction *function3 = NdsclaFunctionAlloc(f3, 3, NULL);
+    NdsclaFunction *function4 = NdsclaFunctionAlloc(f4, 3, NULL);
     VectorFunction *testFunction = VectorFunctionAlloc(3, 4);
     testFunction->Function[0] = *function1;
     testFunction->Function[1] = *function2;
