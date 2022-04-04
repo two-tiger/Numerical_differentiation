@@ -6,12 +6,14 @@ Vector *VectorAlloc(int size)
 {
     Vector *v = (Vector *)malloc(sizeof(Vector));
     v->entry = (double *)malloc(sizeof(double) * size);
+    v->complexEntry = (Complex *)malloc(sizeof(Complex) * size);
     v->size = size;
     return v;
 };
 
 void *VectorFree(Vector *v)
 {
+    free(v->complexEntry);
     free(v->entry);
     free(v);
 }
@@ -24,7 +26,7 @@ void VectorCopy(const Vector *v, Vector *w)
         exit(-1);
     }
 
-    for (size_t i = 0; i < v->size; i++)
+    for (int i = 0; i < v->size; i++)
     {
         w->entry[i] = v->entry[i];
     }
@@ -37,14 +39,14 @@ Vector *VectorAddConst(Vector *v, double a, int copy)
     {
         Vector *w = VectorAlloc(v->size);
         VectorCopy(v, w);
-        for (size_t i = 0; i < v->size; i++)
+        for (int i = 0; i < v->size; i++)
         {
             w->entry[i] += a;
         }
         return w;
     }
 
-    for (size_t i = 0; i < v->size; i++)
+    for (int i = 0; i < v->size; i++)
     {
         v->entry[i] += a;
     }
@@ -61,7 +63,7 @@ Vector *VectorAddVector(Vector *v, Vector *w, int copy)
     if (copy == 1)
     {
         Vector *u = VectorAlloc(v->size);
-        for (size_t i = 0; i < u->size; i++)
+        for (int i = 0; i < u->size; i++)
         {
             u->entry[i] = v->entry[i] + w->entry[i];
         }
@@ -69,7 +71,7 @@ Vector *VectorAddVector(Vector *v, Vector *w, int copy)
     }
     else
     {
-        for (size_t i = 0; i < v->size; i++)
+        for (int i = 0; i < v->size; i++)
         {
             w->entry[i] += v->entry[i];
         }
@@ -82,7 +84,7 @@ Vector *VectorMultiply(Vector *v, double a, int copy)
     if (copy == 1)
     {
         Vector *w = VectorAlloc(v->size);
-        for (size_t i = 0; i < v->size; i++)
+        for (int i = 0; i < v->size; i++)
         {
             w->entry[i] = v->entry[i] * a;
         }
@@ -90,7 +92,7 @@ Vector *VectorMultiply(Vector *v, double a, int copy)
     }
     else
     {
-        for (size_t i = 0; i < v->size; i++)
+        for (int i = 0; i < v->size; i++)
         {
             v->entry[i] *= a;
         }
@@ -101,7 +103,7 @@ Vector *VectorMultiply(Vector *v, double a, int copy)
 void *VectorPrint(Vector *v)
 {
     printf("[");
-    for (size_t i = 0; i < v->size; i++)
+    for (int i = 0; i < v->size; i++)
     {
         printf("%f, ", v->entry[i]);
     }
@@ -129,9 +131,9 @@ void *MatrixFree(Matrix *m)
 void *MatrixPrint(Matrix *m)
 {
     printf("[");
-    for (size_t i = 0; i < m->rowSize; i++)
+    for (int i = 0; i < m->rowSize; i++)
     {
-        for (size_t j = 0; j < m->grad[i]->size; j++)
+        for (int j = 0; j < m->grad[i]->size; j++)
         {
             printf("%f, ", m->grad[i]->entry[j]);
         }

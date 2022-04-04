@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "function.h"
 #include <omp.h>
+#include "mycomplex.h"
 
 NdsclaFunction *NdsclaFunctionAlloc(double (*function)(Vector *), int inputsize)
 {
@@ -15,9 +16,15 @@ double NdsclaFunctionCall(NdsclaFunction *function, Vector *x)
     return function->function(x);
 }
 
+Complex NdsclaFunctionCallComplex(NdsclaFunction *function, Vector *x)
+{
+    return function->complexfunction(x);
+}
+
 void *NdsclaFunctionFree(NdsclaFunction *function)
 {
     free(function->function);
+    free(function->complexfunction);
     free(function);
 }
 
@@ -108,4 +115,32 @@ void HessianMatrix(NdsclaFunction *function, const Vector *x0, double h, Vector 
             hessian->entry[function->inputSize * i + j] = (f_ah1_ah2 - f_ah1_sh2 - f_sh1_ah2 + f_sh1_sh2) / (4*h*h);
         }
     }
+}
+
+void bicomplexGrad(NdsclaFunction *function, const Vector *x0, double h, Vector *grad)
+{
+    Vector *temp = VectorAlloc(x0->size);
+    VectorCopy(x0, temp);
+    Complex root;
+    double imroot;
+    for (int i = 0; i < function->inputSize; i++)
+    {
+        for (int j = 0; j < function->inputSize; j++)
+        {
+            if (j == i)
+            {
+                Complex tmph = {x0->entry[j], h};
+                temp->complexEntry[j] = tmph;
+            }
+            else
+            {
+                Complex tmp = {x0->entry[j], 0};
+                temp->complexEntry[j] = tmp;
+            } 
+        }
+        root = NdsclaFunctionCallComplex(function, temp);
+        imroot = root.im;
+        grad->entry[i] = imroot / h;
+    }
+    VectorFree(temp);
 }

@@ -1,8 +1,11 @@
 #pragma once
+#include "mycomplex.h"
+
 struct myvector
 {
     int size;
     double *entry;
+    Complex *complexEntry;
 };
 typedef struct myvector Vector;
 
