@@ -55,8 +55,8 @@ This project implements the algorithm in part <4.4 Computation Derivatives of NL
     - [X] NdsclaFunction
     - [X] VectorFunction
     - [X] Complex
-    - [ ] Bicomplex <- Here
-    - [ ] Dual
+    - [ ] Bicomplex
+    - [X] Dual <- Here
     - [ ] Hyper-Dual
 - [X] Central Finite Difference
     - [X] CentralGrad
@@ -65,8 +65,8 @@ This project implements the algorithm in part <4.4 Computation Derivatives of NL
 - [X] Bicomplex-Step
     - [X] ComplexGrad
     - [X] ComplexJacobi
-    - [ ] ComplexHessian <- Here
+    - [ ] ComplexHessian
 - [ ] Hyper-Dual
-    - [ ] DualGrad
+    - [X] DualGrad <- Here
     - [ ] DualJacobi
     - [ ] DualHessian

@@ -1,11 +1,13 @@
 #pragma once
 #include "mycomplex.h"
+#include "mydual.h"
 
 struct myvector
 {
     int size;
     double *entry;
     Complex *complexEntry;
+    Dual *dualEntry;
 };
 typedef struct myvector Vector;
 

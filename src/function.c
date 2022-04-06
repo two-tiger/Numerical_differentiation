@@ -4,8 +4,9 @@
 #include <omp.h>
 #include "mycomplex.h"
 #include <stdio.h>
+#include "mydual.h"
 
-NdsclaFunction *NdsclaFunctionAlloc(double (*function)(Vector *), int inputsize, Complex (*complexfunction)(Vector *))
+NdsclaFunction *NdsclaFunctionAlloc(double (*function)(Vector *), int inputsize, Complex (*complexfunction)(Vector *), Dual (*dualfunction)(Vector *))
 {
     NdsclaFunction *f = (NdsclaFunction *)malloc(sizeof(NdsclaFunction));
     f->function = function;
@@ -18,6 +19,14 @@ NdsclaFunction *NdsclaFunctionAlloc(double (*function)(Vector *), int inputsize,
     {
         f->complexfunction = NULL;
     }
+    if (dualfunction != NULL)
+    {
+        f->dualfunction = dualfunction;
+    }
+    else
+    {
+        f->dualfunction = NULL;
+    }
     return f;
 }
 
@@ -29,6 +38,11 @@ double NdsclaFunctionCall(NdsclaFunction *function, Vector *x)
 Complex NdsclaFunctionCallComplex(NdsclaFunction *function, Vector *x)
 {
     return function->complexfunction(x);
+}
+
+Dual NdsclaFunctionCallDual(NdsclaFunction *function, Vector *x)
+{
+    return function->dualfunction(x);
 }
 
 void *NdsclaFunctionFree(NdsclaFunction *function)
@@ -151,6 +165,34 @@ void bicomplexGrad(NdsclaFunction *function, const Vector *x0, double h, Vector 
         root = NdsclaFunctionCallComplex(function, temp);
         imroot = root.im;
         grad->entry[i] = imroot / h;
+    }
+    VectorFree(temp);
+}
+
+void dualGrad(NdsclaFunction *function, const Vector *x0, double h, Vector *grad)
+{
+    Vector *temp = VectorAlloc(x0->size);
+    VectorCopy(x0, temp);
+    Dual root;
+    double duroot;
+    for (int i = 0; i < function->inputSize; i++)
+    {
+        for (int j = 0; j < function->inputSize; j++)
+        {
+            if (j == i)
+            {
+                Dual tmph = {x0->entry[j], h};
+                temp->dualEntry[j] = tmph;
+            }
+            else
+            {
+                Dual tmp = {x0->entry[j], 0};
+                temp->dualEntry[j] = tmp;
+            }
+        }
+        root = NdsclaFunctionCallDual(function, temp);
+        duroot = root.du;
+        grad->entry[i] = duroot / h;
     }
     VectorFree(temp);
 }

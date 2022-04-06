@@ -7,12 +7,14 @@ Vector *VectorAlloc(int size)
     Vector *v = (Vector *)malloc(sizeof(Vector));
     v->entry = (double *)malloc(sizeof(double) * size);
     v->complexEntry = (Complex *)malloc(sizeof(Complex) * size);
+    v->dualEntry = (Dual *)malloc(sizeof(Dual) * size);
     v->size = size;
     return v;
 };
 
 void *VectorFree(Vector *v)
 {
+    free(v->dualEntry);
     free(v->complexEntry);
     free(v->entry);
     free(v);
