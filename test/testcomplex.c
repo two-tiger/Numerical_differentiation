@@ -4,7 +4,7 @@
 
 int main(void)
 {
-    Complex x, y, p, q, r, s, e, l, n, c, t;
+    Complex x, y, p, q, r, s, e, l, o, n, c, t;
     x.re = 4.2;
     x.im = 1.5;
     y.re = 2.5;
@@ -26,6 +26,9 @@ int main(void)
     printf("\n");
     l = ComplexLog(x);
     ComplexPrint(l);
+    printf("\n");
+    o = ComplexPow(x, 0.5);
+    ComplexPrint(p);
     printf("\n");
     n = ComplexSin(x);
     ComplexPrint(n);

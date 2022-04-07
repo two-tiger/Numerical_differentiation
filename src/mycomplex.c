@@ -45,6 +45,15 @@ Complex ComplexMul(const Complex x, const Complex y)
     return r;
 }
 
+// 复数数乘
+Complex ComplexNumMul(double a, const Complex x)
+{
+    Complex n;
+    n.re = a * x.re;
+    n.im = a * x.im;
+    return n;
+}
+
 // 复数除法
 Complex ComplexDiv(const Complex x, const Complex y)
 {
@@ -79,24 +88,32 @@ Complex ComplexLog(const Complex x)
 {
     Complex l;
     l.re = log(x.re * x.re + x.im * x.im) / 2;
-    l.im = 1 / tan(x.im / x.re);
+    l.im = ComplexArg(x);
     return l;
 }
 
 // 复数开n次方
-Complex ComplexNRoot(const Complex x, int n)
+// Complex ComplexNRoot(const Complex x, int n)
+// {
+//     double abs = ComplexAbs(x);
+//     double abs_n = pow(abs, 1/n);
+//     double theta = ComplexArg(x);
+//     Complex arg;
+//     arg.re = 0;
+//     arg.im = theta / n;
+//     Complex root;
+//     root = ComplexExp(arg);
+//     root.re *= abs_n;
+//     root.im *= abs_n;
+//     return root;
+// }
+
+// 复数幂运算
+Complex ComplexPow(const Complex x, double n)
 {
-    double abs = ComplexAbs(x);
-    double abs_n = pow(abs, 1/n);
-    double theta = ComplexArg(x);
-    Complex arg;
-    arg.re = 0;
-    arg.im = theta / n;
-    Complex root;
-    root = ComplexExp(arg);
-    root.re *= abs_n;
-    root.im *= abs_n;
-    return root;
+    Complex p;
+    p = ComplexExp(ComplexNumMul(n, ComplexLog(x)));
+    return p;
 }
 
 // 复数sin
@@ -133,8 +150,7 @@ Complex ComplexTan(const Complex x)
 //     Complex tmp, i, unit;
 //     i.re = 0; i.im = 1;
 //     unit.re = 1; unit.im = 0;
-//     tmp = ComplexAdd(ComplexMul(&i, x),ComplexNRoot(ComplexSub(&unit,ComplexMul(x, x)),2));
-//     tmp = ComplexLog(&tmp);
+//     tmp = ComplexLog(ComplexAdd(ComplexMul(i, x),ComplexPow(ComplexSub(unit,ComplexMul(x, x)),0.5)));
 //     double sto;
 //     sto = tmp.re;
 //     tmp.re = tmp.im;
