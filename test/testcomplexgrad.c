@@ -40,7 +40,7 @@ Complex f2complex(Vector *x)
 
 int main(void)
 {
-    NdsclaFunction *fun = NdsclaFunctionAlloc(f1, 3, f1complex);
+    NdsclaFunction *fun = NdsclaFunctionAlloc(f1, 3, f1complex, NULL);
     Vector *x0 = VectorAlloc(3);
     x0->entry[0] = 1.0;
     x0->entry[1] = 2.0;
@@ -55,7 +55,7 @@ int main(void)
     printf("the grad of function using complex: ");
     VectorPrint(complexgrad);
     printf("\n");
-    NdsclaFunction *fun1 = NdsclaFunctionAlloc(f2, 3, f2complex);
+    NdsclaFunction *fun1 = NdsclaFunctionAlloc(f2, 3, f2complex, NULL);
     Vector *x1 = VectorAlloc(3);
     x1->entry[0] = 1.0;
     x1->entry[1] = 2.0;

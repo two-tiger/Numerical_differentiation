@@ -30,7 +30,7 @@ int main(void)
     // centralGrad(f, 0.01, x0, grad);
     // VectorPrint(grad);
     // printf("\n");
-    NdsclaFunction *fun = NdsclaFunctionAlloc(f1, 3, NULL);
+    NdsclaFunction *fun = NdsclaFunctionAlloc(f1, 3, NULL, NULL);
     Vector *x0_fun = VectorAlloc(3);
     x0_fun->entry[0] = 1.0;
     x0_fun->entry[1] = 2.0;

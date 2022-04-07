@@ -41,8 +41,8 @@ Complex f2complex(Vector *x)
 
 int main(void)
 {
-    NdsclaFunction *function1 = NdsclaFunctionAlloc(f1, 3, f1complex);
-    NdsclaFunction *function2 = NdsclaFunctionAlloc(f2, 3, f2complex);
+    NdsclaFunction *function1 = NdsclaFunctionAlloc(f1, 3, f1complex, NULL);
+    NdsclaFunction *function2 = NdsclaFunctionAlloc(f2, 3, f2complex, NULL);
     VectorFunction *testfunction = VectorFunctionAlloc(3, 2);
     testfunction->Function[0] = *function1;
     testfunction->Function[1] = *function2;
